@@ -27,6 +27,12 @@ export function reset() {
     timer.minutes = 0
     timer.hours = 0
     reRender(timer)
+    if(isStop){
+        time = time.subscribe(() => {
+            reRender(timer)
+        })
+        isStop = !isStop
+    }
 }
 
 export function startStop() {
@@ -39,6 +45,10 @@ export function startStop() {
         time.unsubscribe()
         time = steram
         isStop = !isStop
+        timer.seconds = 0
+        timer.minutes = 0
+        timer.hours = 0
+        reRender(timer)
     }
 }
 
