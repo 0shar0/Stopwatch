@@ -1,0 +1,8 @@
+.buttons{
+    background-color: rgba(120, 190, 238, 0.3);
+    margin: 5px;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 10px 5px 5px rgba(0,0,0, 0.5);
+}
