@@ -9,7 +9,7 @@ import {pause} from "./Functions/funtions";
 function App(props) {
     return (
         <div className="App">
-            <Display timer={props.timer}/>
+            <Display times={props.times}/>
             <Buttons startStop={startStop} reset={reset} pause={pause}/>
         </div>
     );

@@ -5,7 +5,7 @@ import React from 'react';
 export const reRender = (data) => {
     ReactDOM.render(
         <React.StrictMode>
-            <App timer={data} />
+            <App times={data} />
         </React.StrictMode>,
         document.getElementById('root')
     );}

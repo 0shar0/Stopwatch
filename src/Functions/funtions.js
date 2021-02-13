@@ -1,7 +1,7 @@
-import {timer} from "./data";
+import {times} from "./data";
 import '../index.css';
 import {reRender} from "./reRender";
-import {fromEvent, interval} from "rxjs";
+import {fromEvent, interval, timer} from "rxjs";
 import {map} from "rxjs/operators";
 
 let isStop = true
@@ -9,57 +9,62 @@ let isStop = true
 const steram = interval(1000)
     .pipe(
         map(() => {
-            timer.seconds++
-            if (timer.seconds === 60) {
-                timer.minutes++
-                timer.seconds = 0
+            times.seconds++
+            if (times.seconds === 60) {
+                times.minutes++
+                times.seconds = 0
             }
-            if (timer.minutes === 60) {
-                timer.hours++
-                timer.minutes = 0
+            if (times.minutes === 60) {
+                times.hours++
+                times.minutes = 0
             }
         }))
 
 let time = steram
 
 export function reset() {
-    timer.seconds = 0
-    timer.minutes = 0
-    timer.hours = 0
-    reRender(timer)
-    if(isStop){
+    times.seconds = 0
+    times.minutes = 0
+    times.hours = 0
+    reRender(times)
+    /*if (isStop) {
         time = time.subscribe(() => {
-            reRender(timer)
+            reRender(times)
         })
         isStop = !isStop
-    }
+    }*/
 }
 
 export function startStop() {
     if (isStop) {
         time = time.subscribe(() => {
-            reRender(timer)
+            reRender(times)
         })
         isStop = !isStop
     } else {
         time.unsubscribe()
         time = steram
         isStop = !isStop
-        timer.seconds = 0
-        timer.minutes = 0
-        timer.hours = 0
-        reRender(timer)
+        times.seconds = 0
+        times.minutes = 0
+        times.hours = 0
+        reRender(times)
     }
 }
 
 export function pause() {
     if (!isStop) {
-        let wait = fromEvent(document.getElementById('wait'),'click')
-            .subscribe(()=> {
+        let wait = fromEvent(document.getElementById('wait'), 'click')
+            .subscribe(() => {
                 time.unsubscribe()
                 time = steram
                 isStop = !isStop
             })
-        setTimeout(()=>wait.unsubscribe(),300)
+        timer(300)
+            .pipe(
+                map(() => {
+                    wait.unsubscribe()
+                })
+            ).subscribe()
     }
 }
